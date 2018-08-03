@@ -12,39 +12,56 @@
 #    PROJECT         DNAnexus PROJECT ID
 #    INPUTDIR        Input directory, relative to project root
 #    OUTPUTDIR       Output directory, relative to project root
-#    SUBDIR          Array of subddirectories to process, relative to INPUTDIR
+#       (optional)   SUBDIRS     Array of subddirectories to process, relative to INPUTDIR
 #
 #    ACCEPTFILTER    Process files whose full path matches this regex pattern ...
 #    REJECTFILTER    ... without matching this regex pattern.
 # 
 #    APPNAME         DNAnexus app name ...
-#    APPDIR          ... and where to find it.
+#    APPDIR          ... and where to find it, relative to project root.
 #    OPTIONS         Full options string to be passed to APPNAME
 
-
-##############################################
-DEBUG=0  # Uncomment to print filenames but not actually run
+#DEBUG=0  # Uncomment to print filenames but not actually run
+echo =======================================================
+echo Input: $INPUTDIR .... $ACCEPTFILTER, but not $REJECTFILTER
+echo Output: $OUTPUTDIR
+echo Running: $APPDIR/$APPNAME
 echo Options: $OPTIONS
+echo =======================================================
 
 dx select $PROJECT
-for DIR in $SUBDIR
+
+if [ -z $SUBDIRS ] ; then declare -a SUBDIRS=(".");  fi
+
+for DIR in ${SUBDIRS[*]}
 do
-    for SAMPLE in $(dx find data --name *.bam --path $INPUTDIR/$DIR --delimiter "*" | cut -f 4 -d "*")
+    echo =========================
+    if [ $DIR == "." ]  ; then
+	INPUTSUBDIR=$INPUTDIR
+        OUTPUTSUBDIR=$OUTPUTDIR
+    else
+	INPUTSUBDIR=$INPUTDIR/$DIR
+        OUTPUTSUBDIR=$OUTPUTDIR/$DIR
+    fi
+    echo RUNNING FROM $INPUTSUBDIR TO $OUTPUTSUBDIR
+
+    for SAMPLE in $(dx find data --name *.bam --path $INPUTSUBDIR --delimiter "*" | cut -f 4 -d "*")
     do
 	SAMPLENAME=$(basename $SAMPLE)
 	if [[ $SAMPLE =~ $ACCEPTFILTER ]] && [[ ! $SAMPLE =~ $REJECTFILTER ]]  ; then
-	    if [[ $DEBUG ]] ; then
-		echo $SAMPLE
-	    else
-		dx mkdir -p $OUTPUTDIR/$DIR
+            echo $SAMPLE
+
+	    if [ -z $DEBUG ] ; then
+		dx mkdir -p $OUTPUTSUBDIR
 		
-		dx run "$APPDIR/$APPNAME" --yes \
-		    --destination "$OUTPUTDIR/$DIR" \
-		    --name "$APPNAME|$DIR|${SAMPLENAME%.*}" \
-		    --tag "$DIR" \
-		    -istage-1.raw_reads_unmapped_bam="$SAMPLE" $OPTIONS
+		dx run "$APPDIR/$APPNAME" --yes --destination "$OUTPUTSUBDIR" \
+		    --name "$APPNAME|$DIR|${SAMPLENAME%.*}" --tag "$DIR" \
+		    -istage-1.raw_reads_unmapped_bam="$SAMPLE" \       # sloppy way of dealing with options that include "SAMPLE" by just putting them all here
+                    -istage-1.sample_name="$SAMPLENAME"
+                    $OPTIONS
 	    fi
 	fi
     done
 done
 
+echo =======================================================

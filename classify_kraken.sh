@@ -30,7 +30,8 @@ APPDIR="/viral-ngs/1.21.0/classify_kraken"
 RESOURCEDIR="/resources"
 REFERENCEDIR="/references"
 
-OPTIONS=" -istage-1.kraken_db_tar_lz4=$REFERENCEDIR/"            ## currently broken??
-OPTIONS+=" -istage-1.krona_taxonomy_db_tgz=$REFERENCEDIR/" 
+OPTIONS=""
+#OPTIONS=" -istage-1.kraken_db_tar_lz4=$REFERENCEDIR/"            ## currently broken??
+#OPTIONS+=" -istage-1.krona_taxonomy_db_tgz=$REFERENCEDIR/" 
 
-source ./dna_batch_launch.sh
+source utilities/dna_batch_launch.sh

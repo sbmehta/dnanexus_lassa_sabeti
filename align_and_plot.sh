@@ -1,10 +1,10 @@
 #! /bin/bash
 
 ###############################################################
-### DNANEXUS BATCH PARAMETERS: ASSEMBLE_DENOVO_WITH_DEPLETE ###
+### DNANEXUS BATCH PARAMETERS: ALIGN_AND_PLOT #################
 ###############################################################
 # VERSIONS:
-#     v0.1  2018-08-03 sbm    Split off parameters from earlier "generic_launch" scripts
+#     v0.1  2018-08-03 sbm    Split off parameters from earlier "generic_launch" script
 #
 # Assumes running from the Broad cluster with something like the following environmentis already set up:
 #    $ use Python-2.7
@@ -13,7 +13,7 @@
 
 
 ##### TARGET DATA #####
-PROJECT="project-FJ4PZ2j0VkG0Vz2Z74bX0x7Q"
+PROJECT="project-XXXXXXXXXXXXXXXXXXXX"
 
 INPUTDIR="/analysis"
 OUTPUTDIR="/assemblies"
@@ -37,7 +37,7 @@ OPTIONS+="stage-1.aligner_options="
 
 
 
-source ./dna_batch_launch.sh
+source utilities/dna_batch_launch.sh
 
 
 

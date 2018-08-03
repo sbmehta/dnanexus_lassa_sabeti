@@ -32,4 +32,4 @@ REFERENCEDIR="/references"
 
 OPTIONS=""
 
-source ./dna_batch_launch.sh
+source utilities/dna_batch_launch.sh

@@ -106,7 +106,7 @@ if __name__ == "__main__":
         for execution_key in ["output"]:
             if execution_key in execution and execution[execution_key] is not None:
                 for key, value in execution[execution_key].items():
-                    if type(value) == int:
+                    if (type(value) == int or type(value) == float):
                         field_name=key.split(".")[-1]
                         metrics[field_name] = value
                         keys_seen.add(field_name)

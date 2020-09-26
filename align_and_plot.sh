@@ -29,11 +29,11 @@ RESOURCEDIR="/resources"
 REFERENCEDIR="/references"
 
 ## metagenomic databases
-OPTIONS=" istage-1.assembly_fasta=$REFERENCEDIR/ref-lasv-ISTH2376.fasta"
-OPTIONS+="istage-1.gatk_jar=$RESOURCEDIR/GenomeAnalysisTK-3.6.tar.bz2"
-OPTIONS+="stage-1.novocraft_license=$RESOURCEDIR/novoalign.lic"
-OPTIONS+="stage-1.aligner="
-OPTIONS+="stage-1.aligner_options="
+OPTIONS=" -istage-1.assembly_fasta=$REFERENCEDIR/ref-lasv-ISTH2376.fasta"
+OPTIONS+=" -istage-1.gatk_jar=$RESOURCEDIR/GenomeAnalysisTK-3.6.tar.bz2"
+OPTIONS+=" -istage-1.novocraft_license=$RESOURCEDIR/novoalign.lic"
+#OPTIONS+="istage-1.aligner="
+#OPTIONS+="istage-1.aligner_options="
 
 
 
